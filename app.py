@@ -15,7 +15,13 @@ st.title("🌍 COVID-19 Interactive Dashboard")
 # Filters
 countries = st.multiselect("Select Countries", df['location'].unique(), default=["India", "United States"])
 date_range = st.date_input("Select Date Range", [df['date'].min(), df['date'].max()])
-filtered = df[(df['location'].isin(countries)) & (df['date'].between(*date_range))]
+# Convert date_range values to pandas datetime
+start_date = pd.to_datetime(date_range[0])
+end_date = pd.to_datetime(date_range[1])
+
+# Filter dataframe
+filtered = df[(df['location'].isin(countries)) & (df['date'].between(start_date, end_date))]
+
 
 # Plotting Cases
 st.subheader("📈 New Cases Over Time")
